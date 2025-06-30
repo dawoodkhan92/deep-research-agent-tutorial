@@ -1,0 +1,21 @@
+# Core dependencies - Exact from cookbook
+openai>=1.88
+openai-agents>=0.0.19
+
+# Agency Swarm (drop-in replacement for agents SDK)
+agency-swarm>=1.0.0b3
+
+# Environment variables
+python-dotenv>=1.0.0
+
+# Typing support
+typing-extensions>=4.0.0
+
+# Professional PDF generation - Cross-platform compatible
+reportlab>=4.0.0
+
+# Async support
+asyncio
+
+# Standard library utilities
+pathlib

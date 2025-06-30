@@ -205,3 +205,13 @@ cython_debug/
 marimo/_static/
 marimo/_lsp/
 __marimo__/
+<<<<<<< HEAD
+=======
+
+
+# Agency Swarm auto-generated vector store directories
+files_vs_*/
+
+# macOS system files
+.DS_Store
+>>>>>>> 6c0aaaf (wip: Initial Deep Research Agent Tutorial - raw implementation)
