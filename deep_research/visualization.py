@@ -15,6 +15,6 @@ def create_agency_visualization(agency, output_dir="outputs"):
     """
     Path(output_dir).mkdir(exist_ok=True)
     
-    return agency.create_interactive_visualization(
+    return agency.visualize(
         output_file=f"{output_dir}/agency_structure.html"
     )

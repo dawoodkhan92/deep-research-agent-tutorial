@@ -60,23 +60,17 @@ git checkout release/v1.0.0-beta
 
 ---
 
-## 🔥 CRITICAL NAMESPACE COLLISION WARNING 
+## 🔥 CRITICAL FOLDER NAMING REQUIREMENTS
 
-### ⚠️ NEVER USE `/agents` FOLDER NAME! ⚠️
+### ⚠️ NEVER USE `/agents` OR `/agents_modules` FOLDER NAMES! ⚠️
 
 **CRITICAL BUG DISCOVERED**: If you name the folder `/agents`, it creates a namespace collision with the `openai-agents` package:
 
-```bash
-# ❌ FATAL ERROR - DO NOT DO THIS:
-mkdir agents/
-# Results in: ImportError: cannot import name 'RunConfig' from 'agents'
 
-# ✅ CORRECT - Current implementation uses agents SDK directly in main.py
-```
+**MANDATORY FOLDER STRUCTURE**:
+- ✅ **ALWAYS USE**: `deep_research/` folder for modular components
 
-**Why**: The `agents` package (openai-agents) must be imported directly, not shadowed by local folders.
-
-**Current safe structure**: All agents defined in `main.py` - NEVER create conflicting `/agents` folder!
+**Current safe structure**: All agents defined in `main.py` with exact cookbook preservation + modular components in `deep_research/`
 
 ---
 
@@ -129,10 +123,22 @@ files/
 
 ```
 deep-research-agent-tutorial/
-├── main.py                               # Complete implementation (315 lines)
+├── main.py
 ├── AGENTS.md                             # THIS FILE - CRITICAL WORKFLOW INFO ONLY!
 ├── README.md                             # Usage documentation
 ├── requirements.txt                      # Dependencies
+├── deep_research/
+│   ├── __init__.py                       # Module definition
+│   ├── basic_research_agent.py           # Basic research agent factory
+│   ├── research_agent.py                 # Multi-agent research agent
+│   ├── instruction_agent.py              # Instruction building agent
+│   ├── clarifying_agent.py               # Clarification agent
+│   ├── triage_agent.py                   # Triage agent
+│   ├── structured_outputs.py             # Pydantic models
+│   ├── prompts.py                        # Agent prompts
+│   ├── utils.py                          # Utility functions
+│   ├── visualization.py                  # Agency visualization
+│   └── pdf_generator.py                  # PDF generation
 ├── files/                                # Knowledge files for MCP processing
 │   └── sample_research_data.md          # Sample data for agents
 └── outputs/                              # Generated research results
