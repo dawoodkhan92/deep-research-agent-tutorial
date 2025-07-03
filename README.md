@@ -1,58 +1,135 @@
-# Deep Research Agents - Agency Swarm Implementation
+# Deep Research Agent Tutorial
 
-Implementation based on the [OpenAI Deep Research API Cookbook](https://cookbook.openai.com/examples/deep_research_api/introduction_to_deep_research_api_agents) using Agency Swarm as a drop-in replacement for the Agents SDK.
+**Beginner-friendly tutorial** implementing OpenAI Deep Research API patterns using Agency Swarm v1.x framework.
 
-## Features
+## 🎯 Project Overview
 
-✅ **WebSearchTool** - Web search capabilities
-✅ **Streaming Progress** - Real-time research updates
-✅ **Async Execution** - Runner.run_streamed support
-✅ **Structured Outputs** - Pydantic output_type validation
-✅ **Citation Tracking** - URL citation extraction
-✅ **Agent Interaction Flow** - Detailed workflow logging
-✅ **Multi-Agent Handoffs** - Triage → Clarifying → Instruction → Research
+This tutorial demonstrates two research patterns from the [OpenAI Deep Research Cookbook](https://cookbook.openai.com/examples/deep_research_api/deep_research_agents):
 
-## Quick Start
+1. **Basic Research** - Single agent with web search
+2. **Multi-Agent Research** - Four agents with handoffs pattern
 
-1. **Install dependencies:**
-   ```bash
-   pip install -r requirements.txt
-   ```
+## 📁 Current Structure
 
-2. **Set API key:**
-   ```bash
-   cp .env.example .env
-   # Edit .env and add your OPENAI_API_KEY
-   ```
+```
+deep-research-agent-tutorial/
+├── BasicResearchAgency/
+│   └── agency.py                     # 🎯 Single agent research (simplest)
+├── DeepResearchAgency/
+│   ├── agency.py                     # 🎯 Multi-agent handoffs pattern
+│   ├── ClarifyingAgent/              # Asks clarification questions
+│   ├── InstructionAgent/             # Enriches research queries
+│   ├── ResearchAgent/                # Performs final research
+│   ├── shared_outputs.py             # Clarifications model
+│   └── utils.py                      # Citation processing + PDF generation
+├── files/                            # Knowledge files for research context
+└── mcp/                              # MCP server for internal search
+```
 
-3. **Run examples:**
-   ```bash
-   python main.py
-   ```
+## 🚀 Quick Start
 
-## Implementation Structure
+### 1. Set up environment
+```bash
+# Install dependencies
+pip install -r requirements.txt
 
-`main.py` contains the complete implementation:
+# Create .env file with your OpenAI API key
+echo "OPENAI_API_KEY=your_key_here" > .env
 
-- **Basic Research Agent** (o4-mini-deep-research model)
-- **Multi-Agent Pipeline** (Triage → Clarifying → Instruction → Research)
-- **Streaming Functions** with progress tracking
-- **Utility Functions** for agent interaction flow and citations
-- **Research Prompts** for optimal results
+# Add knowledge files to ./files folder (optional)
+# Supports: .txt, .md, .json, .csv
+```
 
-### Agent Flow
+### 2. Start MCP Server (for internal file search)
+```bash
+# Start the local MCP server in a separate terminal
+python mcp/start_mcp_server.py
 
-1. **Triage Agent** - Routes queries for clarification or direct research
-2. **Clarifying Agent** - Asks follow-up questions (with structured output)
-3. **Instruction Agent** - Converts queries into detailed research briefs
-4. **Research Agent** - Performs deep research with web search and MCP
+# The server will run on http://localhost:8001
+# Keep this running while using the research agencies
+```
 
-## Zero Data Retention
+### 3. Run Basic Research (Simplest)
+```bash
+cd BasicResearchAgency
+python agency.py --terminal           # Terminal streaming demo with PDF generation
+python agency.py                      # Launch Copilot UI
+```
 
-Enabled by default with `OPENAI_AGENTS_DISABLE_TRACING=1` for enterprise compliance.
+### 4. Run Multi-Agent Research (Advanced)
+```bash
+cd DeepResearchAgency
+python agency.py --terminal           # Terminal streaming demo with PDF generation
+python agency.py                      # Launch Copilot UI (default)
+```
 
-## Files
 
-- `files/` - Knowledge files for internal MCP search
-- `outputs/` - Generated research results  
-- `.env` - API key configuration
+
+## 🔧 Architecture
+
+### BasicResearchAgency
+- **Single Agent**: Research Agent
+- **Model**: `o4-mini-deep-research-2025-06-26` (fast)
+- **Tools**: WebSearchTool + MCP internal search
+- **Perfect for**: Beginners, simple research tasks
+
+### DeepResearchAgency
+- **Entry Point**: Triage Agent
+- **Flow**: Triage → [Clarifying] → Instruction → Research
+- **Pattern**: Sequential handoffs (cookbook exact)
+- **Features**: Citation processing, agent interaction flow
+- **Perfect for**: Complex research with clarification workflow
+
+## 🧪 Testing
+
+```bash
+python tests/test_simple.py
+# Should output: ✅ BasicResearchAgency ✅ DeepResearchAgency
+```
+
+## 📚 Key Features
+
+- ✅ **Beginner-friendly**: Simple Agency Swarm v1.0 patterns
+- ✅ **Cookbook aligned**: Exact prompts and models from OpenAI cookbook
+- ✅ **Modern demos**: Streaming terminal + Copilot UI support
+- ✅ **Hybrid search**: Web + internal documents via MCP integration
+- ✅ **Auto file upload**: Agency Swarm handles files/ folder automatically
+- ✅ **Citation processing**: Extract and display research sources
+- ✅ **PDF Generation**: Automatic research report saving to professional PDF format
+
+
+## 🔗 MCP Integration ⚠️ CRITICAL
+
+**Why MCP is Required**: OpenAI's FILE SEARCH TOOL is **NOT supported** with deep research models. MCP is the ONLY way to access internal documents.
+
+### 🎯 How Vector Store Detection Works (Automatic!)
+
+**Simple 3-Step Process**:
+1. **Run an Agency** → Agency Swarm uploads `./files/` and creates `files_vs_[id]` folder
+2. **Start MCP Server** → Automatically finds the `files_vs_*` folder and extracts vector store ID
+3. **Research Works** → Agents can now search both web + your internal documents
+
+**Priority Order** (for advanced users):
+- **Environment Variable**: `VECTOR_STORE_ID=vs_xxxxx` (manual override)
+- **Auto-Detection**: Finds `files_vs_*` folders automatically
+- **Error**: Clear guidance if no vector store exists
+
+**Key Benefits**:
+- ✅ **Zero Configuration** - Works automatically after first agency run
+- ✅ **Persistent** - Vector store persists and gets reused across sessions
+- ✅ **Multi-Agency** - Handles multiple agencies (uses most recent)
+
+### 🔧 Technical Implementation
+
+**MCP Server Architecture**:
+- **Auto-Detection**: Finds `files_vs_*` folders across agency directories automatically
+- **Priority System**: Environment variable override → folder detection → clear error guidance
+- **Modular Design**: Clean separation between server and detection utilities
+
+## 🛠️ Requirements
+
+```bash
+pip install -r requirements.txt
+```
+
+Set `OPENAI_API_KEY` in `.env` file. Start with BasicResearchAgency for simplest example!
