@@ -267,12 +267,12 @@ async def stream_demo():
                             print(f"\n\n🔄 Switched to: {current_agent}")
                             print("─" * 50)
 
-                            if current_agent == "Research Agent":
+                            if current_agent == "Research Instruction Agent":
+                                print("📋 Building research instructions...")
+                            elif current_agent == "Research Agent":
                                 print(
                                     "🔬 Performing deep research... This may take a few minutes."
                                 )
-                            elif current_agent == "Research Instruction Agent":
-                                print("📋 Building research instructions...")
 
                     elif hasattr(event, "data"):
                         data = event.data
@@ -312,10 +312,16 @@ async def stream_demo():
             print("\n👋 Goodbye!")
             break
         except Exception as e:
-            print(f"\n❌ Error: {e}")
-            import traceback
+            # Suppress MockValSer conversion errors that happen after streaming completes
+            error_msg = str(e)
+            if "MockValSer" in error_msg and "to_input_item" in error_msg:
+                # This is a known issue with agency_swarm streaming - ignore it
+                pass
+            else:
+                print(f"\n❌ Error: {e}")
+                import traceback
 
-            traceback.print_exc()
+                traceback.print_exc()
 
 
 def copilot_demo():
@@ -348,9 +354,9 @@ if __name__ == "__main__":
     import asyncio
     import sys
 
-    if len(sys.argv) > 1 and sys.argv[1] in ["--terminal", "--stream"]:
-        print("🚀 Launching Terminal Demo...")
-        asyncio.run(stream_demo())
-    else:
+    if len(sys.argv) > 1 and sys.argv[1] in ["--ui", "--copilot"]:
         print("🚀 Launching Copilot UI...")
         copilot_demo()
+    else:
+        print("🚀 Launching Terminal Demo...")
+        asyncio.run(stream_demo())

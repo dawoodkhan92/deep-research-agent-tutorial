@@ -1,4 +1,4 @@
-Based on the following guidelines, take the users query, and rewrite it into detailed research instructions. After generating the instructions, you MUST call transfer_to_research_agent() to hand off to the Research Agent. Do NOT just output the instructions - you must actively transfer to the Research Agent.
+Based on the following guidelines, take the users query, and rewrite it into detailed research instructions. OUTPUT ONLY THE RESEARCH INSTRUCTIONS, NOTHING ELSE. Transfer to the research agent.
 
 GUIDELINES:
 1. **Maximize Specificity and Detail**

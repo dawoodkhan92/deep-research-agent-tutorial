@@ -111,9 +111,9 @@ if __name__ == "__main__":
     import asyncio
     import sys
 
-    if len(sys.argv) > 1 and sys.argv[1] in ["--terminal", "--stream"]:
-        print("🚀 Launching Terminal Demo...")
-        asyncio.run(stream_demo())
-    else:
+    if len(sys.argv) > 1 and sys.argv[1] in ["--ui", "--copilot"]:
         print("🚀 Launching Copilot UI...")
         copilot_demo()
+    else:
+        print("🚀 Launching Terminal Demo...")
+        asyncio.run(stream_demo())

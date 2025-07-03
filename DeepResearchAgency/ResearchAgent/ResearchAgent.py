@@ -8,7 +8,7 @@ class ResearchAgent(Agent):
     def __init__(self):
         super().__init__(
             name="Research Agent",
-            model="o3-deep-research-2025-06-26",
+            model="o4-mini-deep-research-2025-06-26",
             instructions="Perform deep empirical research based on the user's instructions.",
             tools=[
                 WebSearchTool(),

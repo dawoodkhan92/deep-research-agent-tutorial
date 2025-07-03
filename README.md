@@ -52,15 +52,15 @@ python mcp/start_mcp_server.py
 ### 3. Run Basic Research (Simplest)
 ```bash
 cd BasicResearchAgency
-python agency.py --terminal           # Terminal streaming demo with PDF generation
-python agency.py                      # Launch Copilot UI
+python agency.py                      # Terminal streaming demo with PDF generation (default)
+python agency.py --ui                 # Launch Copilot UI
 ```
 
 ### 4. Run Multi-Agent Research (Advanced)
 ```bash
 cd DeepResearchAgency
-python agency.py --terminal           # Terminal streaming demo with PDF generation
-python agency.py                      # Launch Copilot UI (default)
+python agency.py                      # Terminal streaming demo with PDF generation (default)
+python agency.py --ui                 # Launch Copilot UI
 ```
 
 
