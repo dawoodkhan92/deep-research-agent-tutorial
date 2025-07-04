@@ -19,8 +19,7 @@ deep-research-agent-tutorial/
 │   ├── agency.py                     # 🎯 Multi-agent handoffs pattern
 │   ├── ClarifyingAgent/              # Asks clarification questions
 │   ├── InstructionBuilderAgent/      # Enriches research queries
-│   ├── ResearchAgent/                # Performs final research
-│   └── tools.py                      # Agency Swarm compatible tools
+│   └── ResearchAgent/                # Performs final research
 ├── files/                            # Knowledge files for research context
 ├── mcp/                              # MCP server for internal search
 └── utils/                            # Shared utilities
@@ -55,6 +54,8 @@ ngrok http 8001
 
 # Copy the ngrok URL (e.g., https://abc123.ngrok-free.app)
 # Update agency.py files with the ngrok URL + /sse
+# Set the MCP_SERVER_URL environment variable before running the agency
+export MCP_SERVER_URL="https://<your-ngrok-url>.ngrok-free.app/sse"
 ```
 
 The server will auto-detect your vector store from `files_vs_*` folders.
@@ -62,15 +63,23 @@ The server will auto-detect your vector store from `files_vs_*` folders.
 ### 3. Run Basic Research (Simplest)
 ```bash
 cd BasicResearchAgency
-python agency.py                      # Terminal streaming demo with PDF generation (default)
-python agency.py --ui                 # Launch Copilot UI
+# Run with ngrok URL
+MCP_SERVER_URL="https://<your-ngrok-url>.ngrok-free.app/sse" python agency.py
+# Or run with local server
+python agency.py
+# Launch Copilot UI
+MCP_SERVER_URL="https://<your-ngrok-url>.ngrok-free.app/sse" python agency.py --ui
 ```
 
 ### 4. Run Multi-Agent Research (Advanced)
 ```bash
 cd DeepResearchAgency
-python agency.py                      # Terminal streaming demo with PDF generation (default)
-python agency.py --ui                 # Launch Copilot UI
+# Run with ngrok URL
+MCP_SERVER_URL="https://<your-ngrok-url>.ngrok-free.app/sse" python agency.py
+# Or run with local server
+python agency.py
+# Launch Copilot UI
+MCP_SERVER_URL="https://<your-ngrok-url>.ngrok-free.app/sse" python agency.py --ui
 ```
 
 
@@ -86,7 +95,7 @@ python agency.py --ui                 # Launch Copilot UI
 ### DeepResearchAgency
 - **Entry Point**: Triage Agent
 - **Flow**: Triage → [Clarifying] → Instruction → Research
-- **Pattern**: Sequential handoffs (cookbook exact)
+- **Pattern**: Sequential handoffs
 - **Features**: Citation processing, agent interaction flow
 - **Perfect for**: Complex research with clarification workflow
 
