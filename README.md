@@ -82,15 +82,15 @@ python agency.py --ui                 # Launch Copilot UI
 ## 🧪 Testing
 
 ```bash
-python tests/test_simple.py
-# Should output: ✅ BasicResearchAgency ✅ DeepResearchAgency
+python tests/test_comprehensive.py
+# Comprehensive testing of all features and components
 ```
 
 ## 📚 Key Features
 
 - ✅ **Beginner-friendly**: Simple Agency Swarm v1.0 patterns
 - ✅ **Cookbook aligned**: Exact prompts and models from OpenAI cookbook
-- ✅ **Modern demos**: Streaming terminal + Copilot UI support
+- ✅ **Modern demos**: Streaming terminal with debug events + Copilot UI support
 - ✅ **Hybrid search**: Web + internal documents via MCP integration
 - ✅ **Auto file upload**: Agency Swarm handles files/ folder automatically
 - ✅ **Citation processing**: Extract and display research sources
