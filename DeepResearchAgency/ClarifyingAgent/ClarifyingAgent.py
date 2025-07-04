@@ -17,6 +17,7 @@ class ClarifyingAgent(Agent):
         super().__init__(
             name="Clarifying Questions Agent",
             model="gpt-4.1",
+            temperature=0,
             instructions=instructions,
             output_type=Clarifications,
             handoffs=[instruction_agent],

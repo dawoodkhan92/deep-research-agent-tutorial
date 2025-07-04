@@ -8,7 +8,7 @@ Provide comprehensive, empirical research through a multi-agent workflow that en
 ### Communication Flow
 1. **Triage Agent** - Entry point that determines if clarification is needed
 2. **Clarifying Agent** - Gathers additional context when needed
-3. **Instruction Agent** - Enriches queries into detailed research instructions
+3. **Instruction Builder Agent** - Enriches queries into detailed research instructions
 4. **Research Agent** - Performs deep empirical research with web search
 
 ### Quality Standards

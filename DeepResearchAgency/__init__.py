@@ -1,6 +1,11 @@
 from .ClarifyingAgent import ClarifyingAgent
-from .InstructionAgent import InstructionAgent
+from .InstructionBuilderAgent import InstructionBuilderAgent
 from .ResearchAgent import ResearchAgent
 from .shared_outputs import Clarifications
 
-__all__ = ["ClarifyingAgent", "InstructionAgent", "ResearchAgent", "Clarifications"]
+__all__ = [
+    "ClarifyingAgent",
+    "InstructionBuilderAgent",
+    "ResearchAgent",
+    "Clarifications",
+]

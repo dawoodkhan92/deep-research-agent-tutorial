@@ -16,7 +16,7 @@ from pathlib import Path
 
 from agency_swarm import Agency, Agent
 from ClarifyingAgent.ClarifyingAgent import ClarifyingAgent
-from InstructionAgent.InstructionAgent import InstructionAgent
+from InstructionBuilderAgent.InstructionBuilderAgent import InstructionBuilderAgent
 from ResearchAgent.ResearchAgent import ResearchAgent
 from shared_outputs import Clarifications
 from utils import save_research_to_pdf
@@ -36,7 +36,7 @@ if files_dir.exists() and files_dir.is_dir():
 # ─────────────────────────────────────────────────────────────
 
 research_agent = ResearchAgent()
-instruction_agent = InstructionAgent(research_agent)
+instruction_agent = InstructionBuilderAgent(research_agent)
 clarifying_agent = ClarifyingAgent(instruction_agent)
 
 triage_agent = Agent(

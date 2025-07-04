@@ -18,7 +18,7 @@ deep-research-agent-tutorial/
 ├── DeepResearchAgency/
 │   ├── agency.py                     # 🎯 Multi-agent handoffs pattern
 │   ├── ClarifyingAgent/              # Asks clarification questions
-│   ├── InstructionAgent/             # Enriches research queries
+│   ├── InstructionBuilderAgent/      # Enriches research queries
 │   ├── ResearchAgent/                # Performs final research
 │   ├── shared_outputs.py             # Clarifications model
 │   └── utils.py                      # Citation processing + PDF generation

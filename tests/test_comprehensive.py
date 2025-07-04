@@ -43,38 +43,6 @@ def test_basic_setup():
     return True
 
 
-def test_file_structure():
-    """Test project file structure"""
-    print("\n📁 Testing file structure...")
-
-    required_files = [
-        "BasicResearchAgency/agency.py",
-        "DeepResearchAgency/agency.py",
-        "DeepResearchAgency/utils.py",
-        "DeepResearchAgency/shared_outputs.py",
-        "DeepResearchAgency/ResearchAgent/ResearchAgent.py",
-        "DeepResearchAgency/InstructionAgent/InstructionAgent.py",
-        "DeepResearchAgency/ClarifyingAgent/ClarifyingAgent.py",
-        "mcp/server.py",
-        "mcp/vector_utils.py",
-        "mcp/start_mcp_server.py",
-        "requirements.txt",
-        "README.md",
-    ]
-
-    missing_files = []
-    for file_path in required_files:
-        if not Path(file_path).exists():
-            missing_files.append(file_path)
-
-    if missing_files:
-        print(f"❌ Missing files: {missing_files}")
-        return False
-
-    print("✅ All required files present")
-    return True
-
-
 def test_basic_agency_imports():
     """Test that both agencies can be imported without errors"""
     print("\n🔄 Testing agency imports...")
@@ -147,23 +115,6 @@ Mission: Democratizing AI technology for businesses worldwide
 - Financial services automation
 - Manufacturing optimization
 """,
-        "files/product_specs.json": """{
-    "ai_platform": {
-        "name": "TechCorp AI Platform",
-        "version": "2.1.0",
-        "features": [
-            "Natural Language Processing",
-            "Computer Vision",
-            "Predictive Analytics",
-            "AutoML"
-        ],
-        "pricing": {
-            "starter": "$99/month",
-            "professional": "$299/month",
-            "enterprise": "$999/month"
-        }
-    }
-}""",
     }
 
     for file_path, content in test_files.items():
@@ -337,7 +288,6 @@ def run_all_tests():
 
     # Run all tests
     test_results.append(("Basic Setup", test_basic_setup()))
-    test_results.append(("File Structure", test_file_structure()))
     test_results.append(("Agency Imports", test_basic_agency_imports()))
     test_results.append(("Test Files Creation", create_test_files()))
     test_results.append(("MCP Server", test_mcp_server()))

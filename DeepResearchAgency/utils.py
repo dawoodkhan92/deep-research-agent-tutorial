@@ -5,9 +5,10 @@ import re
 from datetime import datetime
 from pathlib import Path
 
-from reportlab.lib.enums import TA_CENTER, TA_JUSTIFY
+from reportlab.lib.enums import TA_CENTER, TA_JUSTIFY, TA_LEFT
 from reportlab.lib.pagesizes import A4
 from reportlab.lib.styles import ParagraphStyle, getSampleStyleSheet
+from reportlab.lib.units import inch
 from reportlab.platypus import Paragraph, SimpleDocTemplate, Spacer
 
 
@@ -54,7 +55,7 @@ def save_research_to_pdf(
         rightMargin=72,
         leftMargin=72,
         topMargin=72,
-        bottomMargin=18,
+        bottomMargin=72,
     )
 
     # Get styles
@@ -64,8 +65,8 @@ def save_research_to_pdf(
     title_style = ParagraphStyle(
         "CustomTitle",
         parent=styles["Heading1"],
-        fontSize=18,
-        spaceAfter=30,
+        fontSize=20,
+        spaceAfter=0.3 * inch,
         alignment=TA_CENTER,
         textColor="#2c3e50",
     )
@@ -74,7 +75,7 @@ def save_research_to_pdf(
         "CustomSubtitle",
         parent=styles["Heading2"],
         fontSize=12,
-        spaceAfter=20,
+        spaceAfter=0.2 * inch,
         alignment=TA_CENTER,
         textColor="#7f8c8d",
     )
@@ -83,10 +84,54 @@ def save_research_to_pdf(
         "CustomBody",
         parent=styles["Normal"],
         fontSize=11,
-        spaceAfter=12,
+        spaceAfter=0.15 * inch,
         alignment=TA_JUSTIFY,
         leftIndent=0,
         rightIndent=0,
+        leading=14,  # Line spacing
+    )
+
+    # Custom header styles
+    header1_style = ParagraphStyle(
+        "CustomHeader1",
+        parent=styles["Heading1"],
+        fontSize=16,
+        spaceAfter=0.2 * inch,
+        spaceBefore=0.3 * inch,
+        alignment=TA_LEFT,
+        textColor="#2c3e50",
+    )
+
+    header2_style = ParagraphStyle(
+        "CustomHeader2",
+        parent=styles["Heading2"],
+        fontSize=14,
+        spaceAfter=0.15 * inch,
+        spaceBefore=0.2 * inch,
+        alignment=TA_LEFT,
+        textColor="#34495e",
+    )
+
+    header3_style = ParagraphStyle(
+        "CustomHeader3",
+        parent=styles["Heading3"],
+        fontSize=12,
+        spaceAfter=0.1 * inch,
+        spaceBefore=0.15 * inch,
+        alignment=TA_LEFT,
+        textColor="#34495e",
+    )
+
+    # List item style
+    list_style = ParagraphStyle(
+        "CustomList",
+        parent=styles["Normal"],
+        fontSize=11,
+        spaceAfter=0.05 * inch,
+        leftIndent=0.25 * inch,
+        bulletIndent=0.1 * inch,
+        alignment=TA_LEFT,
+        leading=14,
     )
 
     # Build content
@@ -94,54 +139,103 @@ def save_research_to_pdf(
 
     # Title
     story.append(Paragraph("Deep Research Report", title_style))
-    story.append(Spacer(1, 12))
+    story.append(Spacer(1, 0.1 * inch))
 
     # Query/Subtitle
-    story.append(Paragraph(f"Query: {query}", subtitle_style))
-    story.append(Spacer(1, 12))
+    story.append(Paragraph(f"Query: {_escape_html(query)}", subtitle_style))
+    story.append(Spacer(1, 0.1 * inch))
 
     # Timestamp
     timestamp_text = f"Generated on {datetime.now().strftime('%B %d, %Y at %I:%M %p')}"
     story.append(Paragraph(timestamp_text, subtitle_style))
-    story.append(Spacer(1, 24))
+    story.append(Spacer(1, 0.3 * inch))
 
-    # Research content
-    # Split content into paragraphs and format
-    paragraphs = research_content.split("\n\n")
-    for para in paragraphs:
-        if para.strip():
-            # Handle basic markdown-style formatting
-            formatted_para = para.strip()
+    # Process research content
+    lines = research_content.split("\n")
+    i = 0
+    while i < len(lines):
+        line = lines[i].strip()
 
-            # Convert **bold** to <b>bold</b>
-            formatted_para = re.sub(r"\*\*(.*?)\*\*", r"<b>\1</b>", formatted_para)
+        if not line:
+            # Skip empty lines but add small spacer
+            story.append(Spacer(1, 0.05 * inch))
+            i += 1
+            continue
 
-            # Convert *italic* to <i>italic</i>
-            formatted_para = re.sub(r"\*(.*?)\*", r"<i>\1</i>", formatted_para)
+        # Handle headers
+        if line.startswith("#"):
+            hash_count = len(line) - len(line.lstrip("#"))
+            header_text = line.lstrip("# ").strip()
 
-            # Handle headers (lines starting with #)
-            if formatted_para.startswith("#"):
-                # Count hash symbols
-                hash_count = len(formatted_para) - len(formatted_para.lstrip("#"))
-                header_text = formatted_para.lstrip("# ").strip()
-
-                if hash_count == 1:
-                    header_style = styles["Heading1"]
-                elif hash_count == 2:
-                    header_style = styles["Heading2"]
-                elif hash_count == 3:
-                    header_style = styles["Heading3"]
-                else:
-                    header_style = styles["Heading4"]
-
-                story.append(Spacer(1, 12))
-                story.append(Paragraph(header_text, header_style))
-                story.append(Spacer(1, 6))
+            if hash_count == 1:
+                story.append(Paragraph(_escape_html(header_text), header1_style))
+            elif hash_count == 2:
+                story.append(Paragraph(_escape_html(header_text), header2_style))
             else:
-                story.append(Paragraph(formatted_para, body_style))
-                story.append(Spacer(1, 6))
+                story.append(Paragraph(_escape_html(header_text), header3_style))
+
+        # Handle list items
+        elif line.startswith(("- ", "* ", "• ")):
+            bullet_text = line[2:].strip()
+            story.append(Paragraph(f"• {_format_inline_text(bullet_text)}", list_style))
+
+        # Handle numbered lists
+        elif re.match(r"^\d+\.\s+", line):
+            story.append(Paragraph(_format_inline_text(line), list_style))
+
+        # Handle regular paragraphs
+        else:
+            # Collect continuation lines for multi-line paragraphs
+            paragraph_lines = [line]
+            j = i + 1
+            while (
+                j < len(lines)
+                and lines[j].strip()
+                and not lines[j].startswith("#")
+                and not lines[j].startswith(("- ", "* ", "• "))
+                and not re.match(r"^\d+\.\s+", lines[j])
+            ):
+                paragraph_lines.append(lines[j].strip())
+                j += 1
+
+            # Join paragraph lines
+            paragraph_text = " ".join(paragraph_lines)
+            story.append(Paragraph(_format_inline_text(paragraph_text), body_style))
+
+            # Skip the lines we've processed
+            i = j - 1
+
+        i += 1
 
     # Build PDF
     doc.build(story)
 
     return filepath
+
+
+def _escape_html(text: str) -> str:
+    """Escape HTML special characters for ReportLab."""
+    return (
+        text.replace("&", "&amp;")
+        .replace("<", "&lt;")
+        .replace(">", "&gt;")
+        .replace('"', "&quot;")
+        .replace("'", "&#39;")
+    )
+
+
+def _format_inline_text(text: str) -> str:
+    """Format inline text with bold, italic, and HTML escaping."""
+    # First escape HTML
+    text = _escape_html(text)
+
+    # Convert **bold** to <b>bold</b>
+    text = re.sub(r"\*\*(.*?)\*\*", r"<b>\1</b>", text)
+
+    # Convert *italic* to <i>italic</i> (but not if it's part of **bold**)
+    text = re.sub(r"(?<!\*)\*([^*]+?)\*(?!\*)", r"<i>\1</i>", text)
+
+    # Convert `code` to monospace
+    text = re.sub(r"`([^`]+?)`", r'<font name="Courier">\1</font>', text)
+
+    return text
