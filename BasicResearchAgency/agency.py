@@ -14,7 +14,7 @@ sys.path.append(os.path.dirname(os.path.dirname(__file__)))
 from agency_swarm import Agency, Agent
 from agents import HostedMCPTool, WebSearchTool
 
-from utils import copilot_demo, stream_demo
+from utils import copilot_demo, save_research_to_pdf, stream_demo
 
 # Get MCP server URL from environment or use default
 MCP_SERVER_URL = os.getenv("MCP_SERVER_URL", "http://localhost:8001/sse")
@@ -41,6 +41,19 @@ research_agent = Agent(
 agency = Agency(research_agent)
 
 
+def save_response_to_pdf(response, query):
+    """Save response to PDF with error handling."""
+    try:
+        pdf_path = save_research_to_pdf(
+            research_content=str(response), query=query, output_dir="reports"
+        )
+        print(f"\n📄 Research report saved to: {pdf_path}")
+        return pdf_path
+    except Exception as e:
+        print(f"\n❌ Error saving PDF: {e}")
+        return None
+
+
 if __name__ == "__main__":
     import asyncio
     import sys
@@ -56,7 +69,7 @@ if __name__ == "__main__":
 
     if len(sys.argv) > 1 and sys.argv[1] in ["--ui", "--copilot"]:
         print("🚀 Launching Copilot UI...")
-        copilot_demo(agency)
+        copilot_demo(agency, save_response_to_pdf)
     else:
         print("🚀 Launching Terminal Demo...")
-        asyncio.run(stream_demo(agency))
+        asyncio.run(stream_demo(agency, save_response_to_pdf))
