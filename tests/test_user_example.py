@@ -67,7 +67,7 @@ The convergence of technological advancement, economic necessity, and strategic 
         pdf_path = save_research_to_pdf(
             research_content=user_example_content,
             query="Helium-3 and Lunar Mining Research",
-            output_dir="test_reports",
+            output_dir=str(Path(__file__).parent / "test_reports"),
             filename="user_example_format.pdf",
         )
 

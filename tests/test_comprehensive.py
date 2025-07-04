@@ -104,7 +104,7 @@ The system is operational and ready for testing.
         pdf_path = save_research_to_pdf(
             research_content=test_content,
             query="Test PDF Generation",
-            output_dir="test_reports",
+            output_dir=str(Path(__file__).parent / "test_reports"),
         )
 
         if Path(pdf_path).exists():
