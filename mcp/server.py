@@ -15,7 +15,7 @@ from openai import OpenAI
 from vector_utils import detect_vector_store_id
 
 # Load environment variables from .env file
-load_dotenv()
+load_dotenv(override=True)
 
 # Configure logging
 logging.basicConfig(level=logging.INFO)

@@ -9,6 +9,16 @@ This tutorial demonstrates two research patterns from the [OpenAI Deep Research 
 1. **Basic Research** - Single agent with web search
 2. **Multi-Agent Research** - Four agents with handoffs pattern
 
+## 📚 Key Features
+
+- ✅ **Beginner-friendly**: Simple Agency Swarm v1.0 patterns
+- ✅ **Cookbook aligned**: Exact prompts and models from OpenAI cookbook
+- ✅ **Modern demos**: Streaming terminal with debug events + Copilot UI support
+- ✅ **Hybrid search**: Web + internal documents via MCP integration
+- ✅ **Auto file upload**: Agency Swarm handles files/ folder automatically
+- ✅ **Citation processing**: Extract and display research sources
+- ✅ **Enhanced PDF Generation**: Professional PDFs with numbered URL references using WeasyPrint and full markdown support
+
 ## 📁 Current Structure
 
 ```
@@ -82,8 +92,6 @@ python agency.py
 MCP_SERVER_URL="https://<your-ngrok-url>.ngrok-free.app/sse" python agency.py --ui
 ```
 
-
-
 ## 🔧 Architecture
 
 ### BasicResearchAgency
@@ -98,24 +106,6 @@ MCP_SERVER_URL="https://<your-ngrok-url>.ngrok-free.app/sse" python agency.py --
 - **Pattern**: Sequential handoffs
 - **Features**: Citation processing, agent interaction flow
 - **Perfect for**: Complex research with clarification workflow
-
-## 🧪 Testing
-
-```bash
-python tests/test_comprehensive.py
-# Comprehensive testing of all features and components
-```
-
-## 📚 Key Features
-
-- ✅ **Beginner-friendly**: Simple Agency Swarm v1.0 patterns
-- ✅ **Cookbook aligned**: Exact prompts and models from OpenAI cookbook
-- ✅ **Modern demos**: Streaming terminal with debug events + Copilot UI support
-- ✅ **Hybrid search**: Web + internal documents via MCP integration
-- ✅ **Auto file upload**: Agency Swarm handles files/ folder automatically
-- ✅ **Citation processing**: Extract and display research sources
-- ✅ **Enhanced PDF Generation**: Professional PDFs with numbered URL references using WeasyPrint and full markdown support
-
 
 ## 🔗 MCP Integration ⚠️ CRITICAL
 
@@ -152,10 +142,64 @@ python tests/test_comprehensive.py
 - **Modular Design**: Clean separation between server and detection utilities
 - **FastMCP 2.10+**: Requires latest version for compatibility
 
-## 🛠️ Requirements
+## 👨‍💻 Customization Guide
+
+### 1. Copy `DeepResearchAgency` folder
 
 ```bash
-pip install -r requirements.txt
+cp -r DeepResearchAgency/ MyCustomResearchAgency/
 ```
 
-Set `OPENAI_API_KEY` in `.env` file. Start with BasicResearchAgency for simplest example!
+### 2. Add your local files
+
+Add your files for analysis to the `files/` folder.
+
+### 3. Add any other MCP servers in `ResearchAgent.py`
+
+```python
+# ... inside agent class
+tools = [
+    # Add any other tools here
+    HostedMCPTool(
+        tool_config={
+            "type": "mcp",
+            "server_label": "github_mcp",
+            "server_url": "https://api.githubcopilot.com/mcp/",
+            "require_approval": "never",
+            "headers": {
+                "Authorization": "Bearer ${input:github_mcp_pat}"
+            }
+        }
+    ),
+]
+
+#...
+```
+
+### 4. Adjust agent instructions
+
+Adjust the `instructions.md` file in the `ResearchAgent` folder.
+
+Adjust any other agent instructions as needed.
+
+### 5. Run the Agency
+
+```bash
+cd MyCustomResearchAgency
+cd DeepResearchAgency
+# Run with ngrok URL
+MCP_SERVER_URL="https://<your-ngrok-url>.ngrok-free.app/sse" python agency.py
+# Or run with local server
+python agency.py
+# Launch Copilot UI
+MCP_SERVER_URL="https://<your-ngrok-url>.ngrok-free.app/sse" python agency.py --ui
+```
+
+## 🧪 Testing
+
+```bash
+python tests/test_comprehensive.py
+# Comprehensive testing of all features and components
+```
+
+
