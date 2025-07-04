@@ -97,6 +97,8 @@ def _extract_vector_store_id_from_folder(vs_folder):
         raise ValueError(f"Invalid vector store folder format: {folder_name}")
 
     vector_store_id = match.group(1)
+    if not str(vector_store_id).startswith("vs_"):
+        vector_store_id = "vs_" + vector_store_id
     logger.info(f"Extracted vector store ID: {vector_store_id}")
     return vector_store_id
 

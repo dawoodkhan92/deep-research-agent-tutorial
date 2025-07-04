@@ -12,10 +12,14 @@ import sys
 sys.path.append(os.path.dirname(os.path.dirname(__file__)))
 
 from agency_swarm import Agency, Agent
-from agents import WebSearchTool
+from agents import WebSearchTool, HostedMCPTool
 from agents.mcp import MCPServerSse
 
 from utils import run_agency_demo
+
+from dotenv import load_dotenv
+
+load_dotenv()
 
 # Get MCP server URL from environment or use default
 MCP_SERVER_URL = os.getenv("MCP_SERVER_URL", "http://0.0.0.0:8001/sse")
@@ -37,16 +41,16 @@ research_agent = Agent(
     model="o4-mini-deep-research-2025-06-26",
     tools=[
         WebSearchTool(),
-        # HostedMCPTool(
-        #     tool_config={
-        #         "type": "mcp",
-        #         "server_label": "file_search",
-        #         "server_url": MCP_SERVER_URL,
-        #         "require_approval": "never",
-        #     }
-        # ),
+        HostedMCPTool(
+            tool_config={
+                "type": "mcp",
+                "server_label": "file_search",
+                "server_url": MCP_SERVER_URL,
+                "require_approval": "never",
+            }
+        ),
     ],
-    mcp_servers=[sse_server],
+    # mcp_servers=[sse_server],
     instructions="You perform deep empirical research based on the user's question.",
 )
 

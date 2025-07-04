@@ -1,6 +1,7 @@
 import asyncio
 import json
 import os
+import io
 import sys
 from typing import Callable
 
@@ -9,6 +10,15 @@ from agency_swarm import Agency
 from .pdf import save_research_to_pdf
 
 from pathlib import Path
+
+
+class FilteredStderr(io.TextIOBase):
+    def write(self, s):
+        if "Failed to convert ToolCallItem using to_input_item()" in s:
+            return  # Ignore this line
+        sys.__stderr__.write(s)
+
+sys.stderr = FilteredStderr()
 
 
 def _print_debug(event, seen):
