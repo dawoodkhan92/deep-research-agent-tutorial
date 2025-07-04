@@ -22,18 +22,9 @@ from dotenv import load_dotenv
 load_dotenv()
 
 # Get MCP server URL from environment or use default
-MCP_SERVER_URL = os.getenv("MCP_SERVER_URL", "http://0.0.0.0:8001/sse")
+MCP_SERVER_URL = os.getenv("MCP_SERVER_URL", "http://localhost:8001/sse")
 
 print(f"📡 MCP Server URL: {MCP_SERVER_URL}")
-
-sse_server = MCPServerSse(
-    name="FilesServer", # Tools will be accessed like My_Custom_SSE_Server.some_tool
-    params={
-        "url": MCP_SERVER_URL,
-    },
-    cache_tools_list=True,
-    # Not providing allowed_tools will attach all available tools to the agent
-)
 
 # Basic Research Agent - o4-mini-deep-research with web search
 research_agent = Agent(
@@ -50,7 +41,6 @@ research_agent = Agent(
             }
         ),
     ],
-    # mcp_servers=[sse_server],
     instructions="You perform deep empirical research based on the user's question.",
 )
 
@@ -58,4 +48,6 @@ research_agent = Agent(
 agency = Agency(research_agent)
 
 if __name__ == "__main__":
-    run_agency_demo(agency)
+    #run_agency_demo(agency)
+    # agency.create_interactive_visualization()
+    
