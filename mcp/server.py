@@ -31,8 +31,12 @@ VECTOR_STORE_ID = None
 def create_server():
     """Create MCP server with search and fetch tools."""
     mcp = FastMCP(
-        name="Deep Research MCP Server",
-        instructions="Provides search and document retrieval for deep research.",
+        name="Sample Deep Research MCP Server",
+        instructions="""
+        This MCP server provides search and document retrieval capabilities for deep research.
+        Use the search tool to find relevant documents based on keywords, then use the fetch
+        tool to retrieve complete document content with citations.
+        """,
     )
 
     @mcp.tool()
@@ -180,9 +184,8 @@ def main():
     logger.info("Starting MCP server on 0.0.0.0:8001")
 
     try:
-        server.settings.host = "0.0.0.0"
-        server.settings.port = 8001
-        server.run(transport="sse")
+        # For fastmcp 2.10.1, use the run method with host and port parameters
+        server.run(transport="sse", host="0.0.0.0", port=8001)
     except KeyboardInterrupt:
         logger.info("Server stopped by user")
     except Exception as e:

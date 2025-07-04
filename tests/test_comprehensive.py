@@ -84,7 +84,7 @@ def test_pdf_generation():
     print("\n📄 Testing PDF generation...")
 
     try:
-        from DeepResearchAgency.utils import save_research_to_pdf
+        from utils import save_research_to_pdf
 
         # Test PDF generation
         test_content = """

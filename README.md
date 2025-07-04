@@ -20,9 +20,12 @@ deep-research-agent-tutorial/
 │   ├── ClarifyingAgent/              # Asks clarification questions
 │   ├── InstructionBuilderAgent/      # Enriches research queries
 │   ├── ResearchAgent/                # Performs final research
-│   └── utils.py                      # Citation processing + PDF generation
+│   └── tools.py                      # Agency Swarm compatible tools
 ├── files/                            # Knowledge files for research context
-└── mcp/                              # MCP server for internal search
+├── mcp/                              # MCP server for internal search
+└── utils/                            # Shared utilities
+    ├── demo.py                       # Terminal and Copilot UI demos
+    └── pdf.py                        # PDF generation with citations
 ```
 
 ## 🚀 Quick Start
@@ -40,13 +43,21 @@ echo "OPENAI_API_KEY=your_key_here" > .env
 ```
 
 ### 2. Start MCP Server (for internal file search)
+
+⚠️ **IMPORTANT**: For use with OpenAI's API, the MCP server must be publicly accessible. Use ngrok or similar:
+
 ```bash
-# Start the local MCP server in a separate terminal
+# Terminal 1: Start the local MCP server
 python mcp/start_mcp_server.py
 
-# The server will run on http://localhost:8001
-# Keep this running while using the research agencies
+# Terminal 2: Expose via ngrok (required for OpenAI API access)
+ngrok http 8001
+
+# Copy the ngrok URL (e.g., https://abc123.ngrok-free.app)
+# Update agency.py files with the ngrok URL + /sse
 ```
+
+The server will auto-detect your vector store from `files_vs_*` folders.
 
 ### 3. Run Basic Research (Simplest)
 ```bash
@@ -101,6 +112,12 @@ python tests/test_comprehensive.py
 
 **Why MCP is Required**: OpenAI's FILE SEARCH TOOL is **NOT supported** with deep research models. MCP is the ONLY way to access internal documents.
 
+### 🌐 Public Access Requirement
+
+**IMPORTANT**: When using with OpenAI's API, the MCP server must be publicly accessible:
+- **Local testing**: Works with `http://localhost:8001/sse`
+- **OpenAI API**: Requires public URL (use ngrok, cloudflare tunnel, etc.)
+
 ### 🎯 How Vector Store Detection Works (Automatic!)
 
 **Simple 3-Step Process**:
@@ -124,6 +141,7 @@ python tests/test_comprehensive.py
 - **Auto-Detection**: Finds `files_vs_*` folders across agency directories automatically
 - **Priority System**: Environment variable override → folder detection → clear error guidance
 - **Modular Design**: Clean separation between server and detection utilities
+- **FastMCP 2.10+**: Requires latest version for compatibility
 
 ## 🛠️ Requirements
 

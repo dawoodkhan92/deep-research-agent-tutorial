@@ -18,7 +18,7 @@ def test_user_example_format():
     print("🎯 Testing User's Specific Example Format...")
 
     try:
-        from DeepResearchAgency.utils import save_research_to_pdf
+        from utils import save_research_to_pdf
 
         # User's example content with actual URLs
         user_example_content = """
@@ -93,7 +93,7 @@ def test_url_extraction_from_user_example():
     print("\n🔗 Testing URL Extraction from User Example...")
 
     try:
-        from DeepResearchAgency.utils import ModernPDFGenerator
+        from utils.pdf import ModernPDFGenerator
 
         generator = ModernPDFGenerator()
 

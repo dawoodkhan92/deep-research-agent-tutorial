@@ -3,26 +3,24 @@
 Deep Research Agency
 
 Four-agent handoffs pattern with clarification workflow.
-Triage → [Clarifying, Instruction] → Research using o3-deep-research model.
+Triage → [Clarifying, Instruction] → Research using deep research model.
 """
-
-from dotenv import load_dotenv
-
-load_dotenv()
 
 import os
 import sys
 from pathlib import Path
 
+from dotenv import load_dotenv
+
+load_dotenv()
 sys.path.append(os.path.dirname(os.path.dirname(__file__)))
 
 from agency_swarm import Agency, Agent
 from ClarifyingAgent.ClarifyingAgent import ClarifyingAgent
 from InstructionBuilderAgent.InstructionBuilderAgent import InstructionBuilderAgent
 from ResearchAgent.ResearchAgent import ResearchAgent
-from utils import save_research_to_pdf
 
-from demo_utils import copilot_demo, stream_demo
+from utils import copilot_demo, save_research_to_pdf, stream_demo
 
 # ─────────────────────────────────────────────────────────────
 # Process files at application start
@@ -77,6 +75,16 @@ def save_response_to_pdf(response, query):
 if __name__ == "__main__":
     import asyncio
     import sys
+
+    # Show MCP configuration
+    mcp_url = os.getenv("MCP_SERVER_URL", "http://localhost:8001/sse")
+    print(f"📡 MCP Server URL: {mcp_url}")
+    if "ngrok" in mcp_url:
+        print("✅ Using ngrok tunnel for public access")
+    elif "localhost" in mcp_url:
+        print(
+            "⚠️  Using localhost - OK for local testing, but OpenAI API needs public URL (use ngrok)"
+        )
 
     if len(sys.argv) > 1 and sys.argv[1] in ["--ui", "--copilot"]:
         print("🚀 Launching Copilot UI...")
