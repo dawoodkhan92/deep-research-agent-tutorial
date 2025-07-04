@@ -8,8 +8,10 @@ fastmcp>=2.2.0
 # Typing support
 typing-extensions>=4.0.0
 
-# Professional PDF generation - Cross-platform compatible
-reportlab>=4.0.0
+# Modern PDF generation
+weasyprint>=62.0  # Modern HTML/CSS to PDF with markdown support
+markdown>=3.7     # Full-featured markdown parser with extensions
+beautifulsoup4>=4.12.0  # HTML parsing and manipulation
 
 # Async support
 asyncio

@@ -20,7 +20,6 @@ deep-research-agent-tutorial/
 │   ├── ClarifyingAgent/              # Asks clarification questions
 │   ├── InstructionBuilderAgent/      # Enriches research queries
 │   ├── ResearchAgent/                # Performs final research
-│   ├── shared_outputs.py             # Clarifications model
 │   └── utils.py                      # Citation processing + PDF generation
 ├── files/                            # Knowledge files for research context
 └── mcp/                              # MCP server for internal search
@@ -95,7 +94,7 @@ python tests/test_simple.py
 - ✅ **Hybrid search**: Web + internal documents via MCP integration
 - ✅ **Auto file upload**: Agency Swarm handles files/ folder automatically
 - ✅ **Citation processing**: Extract and display research sources
-- ✅ **PDF Generation**: Automatic research report saving to professional PDF format
+- ✅ **Enhanced PDF Generation**: Professional PDFs with numbered URL references using WeasyPrint and full markdown support
 
 
 ## 🔗 MCP Integration ⚠️ CRITICAL

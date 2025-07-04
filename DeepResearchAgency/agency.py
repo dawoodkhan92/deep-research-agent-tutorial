@@ -20,9 +20,9 @@ from agency_swarm import Agency, Agent
 from ClarifyingAgent.ClarifyingAgent import ClarifyingAgent
 from InstructionBuilderAgent.InstructionBuilderAgent import InstructionBuilderAgent
 from ResearchAgent.ResearchAgent import ResearchAgent
-from shared_outputs import Clarifications
 from utils import save_research_to_pdf
-from demo_utils import stream_demo, copilot_demo
+
+from demo_utils import copilot_demo, stream_demo
 
 # ─────────────────────────────────────────────────────────────
 # Process files at application start
@@ -39,8 +39,8 @@ if files_dir.exists() and files_dir.is_dir():
 # ─────────────────────────────────────────────────────────────
 
 research_agent = ResearchAgent()
-instruction_agent = InstructionBuilderAgent(research_agent)
-clarifying_agent = ClarifyingAgent(instruction_agent)
+instruction_builder_agent = InstructionBuilderAgent(research_agent)
+clarifying_agent = ClarifyingAgent(instruction_builder_agent)
 
 triage_agent = Agent(
     name="Triage Agent",
@@ -50,14 +50,14 @@ triage_agent = Agent(
         "• If no  → call transfer_to_research_instruction_agent\n"
         "Return exactly ONE function-call."
     ),
-    handoffs=[clarifying_agent, instruction_agent],
+    handoffs=[clarifying_agent, instruction_builder_agent],
 )
 
 # Create agency
 agency = Agency(triage_agent)
 
 # ─────────────────────────────────────────────────────────────
-# Enhanced agency wrapper with automatic PDF generation
+# PDF generation helper
 # ─────────────────────────────────────────────────────────────
 
 
@@ -72,29 +72,6 @@ def save_response_to_pdf(response, query):
     except Exception as e:
         print(f"\n❌ Error saving PDF: {e}")
         return None
-
-
-def basic_research(query: str, mock_answers: dict[str, str] | None = None):
-    """Run research with automatic clarification handling and PDF generation."""
-
-    # Get initial response
-    response = agency.get_response(query)
-
-    # Handle clarification questions if they arise
-    if hasattr(response, "output_type") and isinstance(
-        response.output_type, Clarifications
-    ):
-        reply = []
-        for q in response.output_type.questions:
-            ans = (mock_answers or {}).get(q, "No preference.")
-            reply.append(f"**{q}**\n{ans}")
-
-        # Send clarification responses back
-        response = agency.get_response("\n\n".join(reply))
-
-    # Always save to PDF
-    save_response_to_pdf(response, query)
-    return response
 
 
 if __name__ == "__main__":

@@ -1,14 +1,22 @@
 import os
-import sys
 
 from agency_swarm import Agent
+from pydantic import BaseModel
 
-sys.path.append(os.path.dirname(os.path.dirname(__file__)))
-from shared_outputs import Clarifications
+
+class Clarifications(BaseModel):
+    """
+    Structured output for the Clarifying Agent.
+
+    Contains a list of clarification questions to gather more context
+    for research tasks.
+    """
+
+    questions: list[str]
 
 
 class ClarifyingAgent(Agent):
-    def __init__(self, instruction_agent):
+    def __init__(self, instruction_builder_agent):
         # Load instruction from file
         instructions_path = os.path.join(os.path.dirname(__file__), "instructions.md")
         with open(instructions_path, "r", encoding="utf-8") as f:
@@ -20,5 +28,5 @@ class ClarifyingAgent(Agent):
             temperature=0,
             instructions=instructions,
             output_type=Clarifications,
-            handoffs=[instruction_agent],
+            handoffs=[instruction_builder_agent],
         )

@@ -57,7 +57,6 @@
 ```
 AgencyName/
 ├── agency.py              # Main agency with demos (imports individual agents)
-├── shared_outputs.py      # Pydantic models (if needed)
 ├── utils.py              # Utilities (if needed)
 └── AgentName/            # Individual agents in folders
     ├── files/            # Files for OpenAI upload (if needed)
