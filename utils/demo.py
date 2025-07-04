@@ -239,14 +239,16 @@ def copilot_demo(agency: Agency, save_pdf: Callable[[str, str], str] | None = No
         from agency_swarm.ui.demos.launcher import CopilotDemoLauncher
 
         if save_pdf:
+            # Wrap the existing agency with PDF saving logic
+            original_get_response = agency.get_response
 
-            class PDFSavingAgency(Agency):
-                def get_response(self, query: str, **kwargs):
-                    response = super().get_response(query, **kwargs)
-                    save_pdf(str(response), query)
-                    return response
+            def _get_response_and_save(query: str, **kwargs):
+                response = original_get_response(query, **kwargs)
+                save_pdf(str(response), query)
+                return response
 
-            agency = PDFSavingAgency(agency.entry_agent)
+            # Monkey-patch the method for the duration of this demo
+            agency.get_response = _get_response_and_save  # type: ignore
 
         launcher = CopilotDemoLauncher()
         launcher.start(agency)
