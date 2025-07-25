@@ -73,23 +73,27 @@ The server will auto-detect your vector store from `files_vs_*` folders.
 ### 3. Run Basic Research (Simplest)
 ```bash
 cd BasicResearchAgency
-# Run with ngrok URL
-MCP_SERVER_URL="https://<your-ngrok-url>.ngrok-free.app/sse" python agency.py
-# Or run with local server
+# Launch Copilot UI (default)
 python agency.py
-# Launch Copilot UI
-MCP_SERVER_URL="https://<your-ngrok-url>.ngrok-free.app/sse" python agency.py --ui
+
+# Or run terminal demo
+python agency.py --terminal
+
+# With custom MCP server URL
+MCP_SERVER_URL="https://<your-ngrok-url>.ngrok-free.app/sse" python agency.py
 ```
 
 ### 4. Run Multi-Agent Research (Advanced)
 ```bash
 cd DeepResearchAgency
-# Run with ngrok URL
-MCP_SERVER_URL="https://<your-ngrok-url>.ngrok-free.app/sse" python agency.py
-# Or run with local server
+# Launch Copilot UI (default)
 python agency.py
-# Launch Copilot UI
-MCP_SERVER_URL="https://<your-ngrok-url>.ngrok-free.app/sse" python agency.py --ui
+
+# Or run terminal demo
+python agency.py --terminal
+
+# With custom MCP server URL
+MCP_SERVER_URL="https://<your-ngrok-url>.ngrok-free.app/sse" python agency.py
 ```
 
 ## 🔧 Architecture

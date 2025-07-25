@@ -38,4 +38,13 @@ agency = Agency(triage_agent)
 
 
 if __name__ == "__main__":
-    run_agency_demo(agency)
+    # Check if user wants terminal demo specifically
+    if len(sys.argv) > 1 and sys.argv[1] in ["--terminal", "--cli"]:
+        print("🚀 Launching Terminal Demo...")
+        run_agency_demo(agency)
+    else:
+        print("🚀 Launching Copilot UI...")
+        print("📱 A web interface will open in your browser")
+        print("💡 Use --terminal flag for command-line interface")
+        from utils import copilot_demo, save_research_report
+        copilot_demo(agency, save_research_report)
