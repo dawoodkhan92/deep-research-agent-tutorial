@@ -40,3 +40,14 @@ Competitor Analysis (Work): When evaluating competitor products, request a table
 - For product and travel research, prefer linking directly to official or primary websites (e.g., official brand sites, manufacturer pages, or reputable e-commerce platforms like Amazon for user reviews) rather than aggregator sites or SEO-heavy blogs.
 - For academic or scientific queries, prefer linking directly to the original paper or official journal publication rather than survey papers or secondary summaries.
 - If the query is in a specific language, prioritize sources published in that language.
+
+9. **Cultural Intelligence with Qloo**
+- When the research involves consumer preferences, cultural trends, entertainment, lifestyle, or demographic analysis, explicitly instruct the Research Agent to use Qloo's Taste AI API.
+- Specify relevant entities for Qloo analysis (e.g., brands, artists, products, genres, locations).
+- Include demographic context when available (e.g., "Gen Z", "millennials", "adults 25-34").
+- Request geographic context for cultural insights (e.g., "United States", "Tokyo", "Europe").
+- Examples of when to use Qloo:
+  * "Analyze cultural preferences for [brand/artist/product] using Qloo's API"
+  * "Use Qloo to understand consumer behavior patterns for [demographic] in [location]"
+  * "Get cultural affinities and trends related to [entity] from Qloo's database"
+- Emphasize that Qloo provides privacy-first cultural intelligence without personal data.

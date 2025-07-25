@@ -12,7 +12,7 @@ import sys
 sys.path.append(os.path.dirname(os.path.dirname(__file__)))
 
 from agency_swarm import Agency, Agent
-from agents import WebSearchTool, HostedMCPTool
+from agents import WebSearchTool, HostedMCPTool, QlooInsightsTool
 from agents.mcp import MCPServerSse
 
 from utils import run_agency_demo
@@ -32,6 +32,7 @@ research_agent = Agent(
     model="o4-mini-deep-research-2025-06-26",
     tools=[
         WebSearchTool(),
+        QlooInsightsTool(),
         HostedMCPTool(
             tool_config={
                 "type": "mcp",
@@ -41,7 +42,7 @@ research_agent = Agent(
             }
         ),
     ],
-    instructions="You perform deep empirical research based on the user's question.",
+    instructions="You perform deep empirical research based on the user's question. Use Qloo's cultural intelligence API to provide insights into consumer preferences, cultural trends, and demographic behaviors when relevant to the research topic.",
 )
 
 # Create the agency

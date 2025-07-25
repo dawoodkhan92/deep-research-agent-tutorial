@@ -1,7 +1,7 @@
 import os
 
 from agency_swarm import Agent
-from agents import HostedMCPTool, WebSearchTool
+from agents import HostedMCPTool, QlooInsightsTool, WebSearchTool
 
 
 class ResearchAgent(Agent):
@@ -12,9 +12,10 @@ class ResearchAgent(Agent):
         super().__init__(
             name="Research Agent",
             model="o4-mini-deep-research-2025-06-26",
-            instructions="Perform deep empirical research based on the user's instructions.",
+            instructions="Perform deep empirical research based on the user's instructions. Use Qloo's cultural intelligence API to provide insights into consumer preferences, cultural trends, and demographic behaviors when relevant to the research topic.",
             tools=[
                 WebSearchTool(),
+                QlooInsightsTool(),
                 HostedMCPTool(
                     tool_config={
                         "type": "mcp",
