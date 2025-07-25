@@ -84,7 +84,8 @@ class QlooInsightsTool(BaseTool):
         Returns:
             Dict containing API response data
         """
-        base_url = "https://api.qloo.com/v1"
+        # Use hackathon-specific URL if available, otherwise default
+        base_url = os.getenv("QLOO_API_URL", "https://api.qloo.com/v1")
         headers = {
             "Authorization": f"Bearer {api_key}",
             "Content-Type": "application/json"
